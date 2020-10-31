@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from 'semantic-ui-react/dist/commonjs/elements/Button';
-import { IActivity } from '../../../app/layout/models/activity';
+import { IActivity } from '../../../app/models/activity';
 
 interface Iprops {
   activity: IActivity;
