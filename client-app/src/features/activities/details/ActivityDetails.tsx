@@ -1,9 +1,14 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import Button from 'semantic-ui-react/dist/commonjs/elements/Button';
+import { RouteComponentProps } from 'react-router-dom';
+import { Grid } from 'semantic-ui-react';
+
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import ActivityStore from '../../../app/stores/activityStore';
+import ActivityDetailedHeader from './ActivityDetailedHeader';
+import ActivityDetailedInfo from './ActivityDetailedInfo';
+import ActivityDetailedChat from './ActivityDetailedChat';
+import ActivityDetailedSidebar from './ActivityDetailedSidebar';
 
 interface DetailParams {
   id: string;
@@ -11,7 +16,6 @@ interface DetailParams {
 
 const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
   match,
-  history,
 }) => {
   const activityStore = useContext(ActivityStore);
   const { activity, loadActivity, loadingInitial } = activityStore;
@@ -24,35 +28,16 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
     return <LoadingComponent content='Loading activity...' />;
 
   return (
-    <div className='ui card fluid'>
-      <div className='image'>
-        <img src={`/assets/${activity!.category}.jpg`} />
-      </div>
-      <div className='content'>
-        <a className='header'>{activity!.title}</a>
-        <div className='meta'>
-          <span className='date'>{activity!.date}</span>
-        </div>
-        <div className='description'>{activity!.description}</div>
-      </div>
-      <div className='extra content'>
-        <Button.Group widths={2}>
-          <Button
-            as={Link}
-            to={`/manage/${activity.id}`}
-            basic
-            color='blue'
-            content='Edit'
-          />
-          <Button
-            onClick={() => history.push('/activities')}
-            basic
-            color='grey'
-            content='Cancel'
-          />
-        </Button.Group>
-      </div>
-    </div>
+    <Grid>
+      <Grid.Column width={10}>
+        <ActivityDetailedHeader activity={activity} />
+        <ActivityDetailedInfo activity={activity} />
+        <ActivityDetailedChat />
+      </Grid.Column>
+      <Grid.Column width={6}>
+        <ActivityDetailedSidebar />
+      </Grid.Column>
+    </Grid>
   );
 };
 
